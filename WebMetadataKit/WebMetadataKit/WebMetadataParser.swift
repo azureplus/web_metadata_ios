@@ -10,16 +10,16 @@ public class WebMetadataParser {
     private let parserWrapperUserScript: WKUserScript
 
     public init?() {
-        let bundle = NSBundle(forClass: WebMetadataParser.self)
-        guard let libraryPath = bundle.pathForResource("page-metadata-parser.bundle", ofType: "js"),
-           let parserWrapperPath = bundle.pathForResource("WebMetadataParser", ofType: "js"),
-           librarySource = try? NSString(contentsOfFile: libraryPath, encoding: NSUTF8StringEncoding) as String,
-           parserWrapperSource = try? NSString(contentsOfFile: parserWrapperPath, encoding: NSUTF8StringEncoding) as String else {
+        let bundle = Bundle(for: WebMetadataParser.self)
+        guard let libraryPath = bundle.path(forResource: "page-metadata-parser.bundle", ofType: "js"),
+           let parserWrapperPath = bundle.path(forResource: "WebMetadataParser", ofType: "js"),
+           let librarySource = try? NSString(contentsOfFile: libraryPath, encoding: String.Encoding.utf8.rawValue) as String,
+           let parserWrapperSource = try? NSString(contentsOfFile: parserWrapperPath, encoding: String.Encoding.utf8.rawValue) as String else {
             return nil
         }
 
-        libraryUserScript = WKUserScript(source: librarySource, injectionTime: .AtDocumentEnd, forMainFrameOnly: false)
-        parserWrapperUserScript = WKUserScript(source: parserWrapperSource, injectionTime: .AtDocumentEnd, forMainFrameOnly: false)
+        libraryUserScript = WKUserScript(source: librarySource, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+        parserWrapperUserScript = WKUserScript(source: parserWrapperSource, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
     }
 
     public func addUserScriptsIntoWebView(webView: WKWebView) {
